@@ -1,0 +1,23 @@
+{
+  "name": "advocate-cli",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Serverless Advocate CLI using Plop",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc --build tsconfig.json",
+    "dev": "npm run build && node ./index.js",
+    "advocate": "npm run build && plop"
+  },
+  "preferGlobal": true,
+  "bin": {
+    "advocate": "index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/minimist": "^1.2.2",
+    "plop": "^3.1.2",
+    "typescript": "^5.0.4"
+  }
+}

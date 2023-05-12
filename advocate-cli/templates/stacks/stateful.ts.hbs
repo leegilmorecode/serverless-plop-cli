@@ -1,0 +1,19 @@
+import * as cdk from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+// import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
+
+export class {{pascalCase cdkFolderPath}}StatefulStack extends cdk.Stack {
+  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+    super(scope, id, props);
+
+    // The code that defines your stateless stack goes here
+    // e.g. typically dynamodb tables, ecs clusters etc
+
+    // const table = new dynamodb.Table(this, '{{pascalCase cdkFolderPath}}Table', {
+    //   partitionKey: {
+    //     name: 'id',
+    //     type: dynamodb.AttributeType.STRING,
+    //   },
+    // });
+  }
+}
