@@ -3,21 +3,33 @@
   "version": "1.0.0",
   "type": "module",
   "description": "Serverless Advocate CLI using Plop",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
+    "prebuild": "rimraf ./lib",
     "build": "tsc --build tsconfig.json",
-    "dev": "npm run build && node ./index.js",
-    "advocate": "npm run build && plop"
+    "postbuild": "copyfiles --all --exclude \"./**/*.{ts}\" \"./src/templates/**/*\" ./lib",
+    "link": "npm uninstall -g advocate-cli && npm link",
+    "test": "jest --no-cache",
+    "test:watch": "jest --watch --no-cache"
   },
   "preferGlobal": true,
   "bin": {
-    "advocate": "index.js"
+    "advocate": "lib/index.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.21.8",
+    "@babel/preset-env": "^7.21.5",
+    "@babel/preset-typescript": "^7.21.5",
+    "@types/jest": "^29.5.1",
     "@types/minimist": "^1.2.2",
+    "babel-jest": "^29.5.0",
+    "copyfiles": "^2.4.1",
+    "jest": "^29.5.0",
     "plop": "^3.1.2",
+    "rimraf": "^5.0.0",
+    "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
   }
 }

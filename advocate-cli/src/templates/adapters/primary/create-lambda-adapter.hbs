@@ -1,0 +1,53 @@
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
+import {
+  MetricUnits,
+  Metrics,
+  logMetrics,
+} from '@aws-lambda-powertools/metrics';
+import { Tracer, captureLambdaHandler } from '@aws-lambda-powertools/tracer';
+import { logger, schemaValidator, errorHandler } from '@shared/index';
+
+import { {{pascalCase name}}Dto } from '@dto/{{kebabCase name}}';
+import { ValidationError } from '@errors/validation-error';
+import { {{camelCase name}}UseCase } from '@use-cases/{{kebabCase name}}';
+import { injectLambdaContext } from '@aws-lambda-powertools/logger';
+import middy from '@middy/core';
+import { schema } from './{{kebabCase name}}.schema';
+
+const tracer = new Tracer();
+const metrics = new Metrics();
+
+// (primary adapter) --> use case --> (secondary adapter)
+export const {{camelCase name}}Adapter = async ({
+  body,
+}: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+  try {
+    if (!body) throw new ValidationError('no payload body');
+
+    const {{camelCase useCaseSchemaName}} = JSON.parse(body) as {{pascalCase name}}Dto;
+
+    schemaValidator(schema, {{camelCase useCaseSchemaName}});
+
+    const created: {{pascalCase name}}Dto = await {{camelCase name}}UseCase({{camelCase useCaseSchemaName}});
+
+    metrics.addMetric('Successful{{pascalCase name}}Created', MetricUnits.Count, 1);
+
+    return {
+      statusCode: 201,
+      body: JSON.stringify(created),
+    };
+  } catch (error) {
+    let errorMessage = 'Unknown error';
+    if (error instanceof Error) errorMessage = error.message;
+    logger.error(errorMessage);
+
+    metrics.addMetric('{{pascalCase name}}CreatedError', MetricUnits.Count, 1);
+
+    return errorHandler(error);
+  }
+};
+
+export const handler = middy({{camelCase name}}Adapter)
+  .use(injectLambdaContext(logger))
+  .use(captureLambdaHandler(tracer))
+  .use(logMetrics(metrics));

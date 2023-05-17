@@ -1,32 +1,25 @@
 import * as path from 'path';
 
 import { NodePlopAPI } from 'plop';
-import { createFunction } from './actions/functions/create-function/create-function.js';
-import { errorActions } from './actions/errors/errors.js';
-import { executeNpmCommand } from './utils/execute-npm-command.js';
+import { createApp } from './src/action-types/create-app/create-app.js';
+import { createFunction } from './src/actions/functions/create-function/create-function.js';
+import { errorActions } from './src/actions/errors/errors.js';
 import fs from 'fs';
-import { installCdkAppActions } from './actions/installs/install-cdk-app.js';
-import { installDepsActions } from './actions/installs/install-deps.js';
-import { jestActions } from './actions/config/jest.config.js';
-import { sharedActions } from './actions/shared/shared.js';
-import { stacksActions } from './actions/stacks/stacks.js';
-import { tsConfigActions } from './actions/config/ts-config.js';
+import { installCdkAppActions } from './src/actions/installs/install-cdk-app.js';
+import { installDeps } from './src/action-types/install-deps/install-deps.js';
+import { installDepsActions } from './src/actions/installs/install-deps.js';
+import { jestActions } from './src/actions/config/jest.config.js';
+import { sharedActions } from './src/actions/shared/shared.js';
+import { stacksActions } from './src/actions/stacks/stacks.js';
+import { tsConfigActions } from './src/actions/config/ts-config.js';
 
 const cdkFolderPath = path.basename(process.cwd());
 
 export default function (plop: NodePlopAPI) {
   // create the new cdk app
-  plop.setActionType('create the cdk app', () => {
-    executeNpmCommand('cdk init app --language typescript');
-    return 'new cdk app installing...';
-  });
+  createApp(plop);
   // install the common deps that we need
-  plop.setActionType('install deps', () => {
-    executeNpmCommand(
-      'npm i uuid @aws-lambda-powertools/metrics @aws-lambda-powertools/tracer @aws-lambda-powertools/logger @middy/core ajv ajv-formats && npm i -D @types/aws-lambda @types/uuid'
-    );
-    return 'dependencies installing...';
-  });
+  installDeps(plop);
   // delete the lib folder as it contains the single stack that we replace
   // with the stateless and stateful stacks
   plop.setActionType('delete lib folder', (answers, config) => {

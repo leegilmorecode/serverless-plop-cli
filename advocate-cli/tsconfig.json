@@ -12,9 +12,10 @@
     "strictPropertyInitialization": false,
     "strict": true,
     "baseUrl": ".",
+    "outDir": "./lib",
     "paths": {
       "plop": ["./node_modules/plop/src/plop.d.ts"]
     }
   },
-  "exclude": ["./node_modules"]
+  "exclude": ["./node_modules", "./lib"]
 }

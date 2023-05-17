@@ -1,0 +1,39 @@
+{
+  "info": {
+    "_postman_id": "bee3bcc2-9d5c-45f3-8f45-37f4fe1fad42",
+    "name": "Serverless Advocate CLI",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "752706"
+  },
+  "item": [
+    {
+      "name": "Create Resource",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"firstName\": \"Lee\",\n    \"surname\": \"Gilmore\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://{{api}}/prod/customers/",
+          "protocol": "https",
+          "host": ["{{api}}"],
+          "path": ["prod", "customers", ""]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "api",
+      "value": "your-rest-api.execute-api.your-region.amazonaws.com"
+    }
+  ]
+}
