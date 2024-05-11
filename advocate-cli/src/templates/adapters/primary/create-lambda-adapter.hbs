@@ -1,17 +1,15 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import {
-  MetricUnits,
-  Metrics,
-  logMetrics,
-} from '@aws-lambda-powertools/metrics';
-import { Tracer, captureLambdaHandler } from '@aws-lambda-powertools/tracer';
-import { logger, schemaValidator, errorHandler } from '@shared/index';
+import { MetricUnit, Metrics } from '@aws-lambda-powertools/metrics';
+import { errorHandler, logger, schemaValidator } from '@shared';
+import { Tracer } from '@aws-lambda-powertools/tracer';
+import { captureLambdaHandler } from '@aws-lambda-powertools/tracer/middleware';
+import { injectLambdaContext } from '@aws-lambda-powertools/logger/middleware';
+import { logMetrics } from '@aws-lambda-powertools/metrics/middleware';
+import middy from '@middy/core';
 
 import { {{pascalCase name}}Dto } from '@dto/{{kebabCase name}}';
 import { ValidationError } from '@errors/validation-error';
 import { {{camelCase name}}UseCase } from '@use-cases/{{kebabCase name}}';
-import { injectLambdaContext } from '@aws-lambda-powertools/logger';
-import middy from '@middy/core';
 import { schema } from './{{kebabCase name}}.schema';
 
 const tracer = new Tracer();
@@ -30,10 +28,10 @@ export const {{camelCase name}}Adapter = async ({
 
     const created: {{pascalCase name}}Dto = await {{camelCase name}}UseCase({{camelCase useCaseSchemaName}});
 
-    metrics.addMetric('Successful{{pascalCase name}}Created', MetricUnits.Count, 1);
+    metrics.addMetric('Successful{{pascalCase name}}', MetricUnit.Count, 1);
 
     return {
-      statusCode: 201,
+      statusCode: {{statusCode}},
       body: JSON.stringify(created),
     };
   } catch (error) {
@@ -41,7 +39,7 @@ export const {{camelCase name}}Adapter = async ({
     if (error instanceof Error) errorMessage = error.message;
     logger.error(errorMessage);
 
-    metrics.addMetric('{{pascalCase name}}CreatedError', MetricUnits.Count, 1);
+    metrics.addMetric('{{pascalCase name}}Error', MetricUnit.Count, 1);
 
     return errorHandler(error);
   }
