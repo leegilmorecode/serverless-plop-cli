@@ -13,6 +13,7 @@ export const createFunction = (cdkFolderPath: string) => {
           { name: 'Get (API Gateway)', value: 'get' },
           { name: 'Update (API Gateway)', value: 'update' },
           { name: 'Delete (API Gateway)', value: 'delete' },
+          { name: 'Authorizer (API Gateway)', value: 'authorizer' },
           { name: 'Stream (DynamoDB)', value: 'dynamodb-stream' },
           { name: 'Queue (SQS)', value: 'sqs-queue' },
         ],
@@ -22,6 +23,9 @@ export const createFunction = (cdkFolderPath: string) => {
         name: 'name',
         message: (context: any) =>
           `What is the use case name please? (example: ${context.operationType} customer)`,
+        when(context: any) {
+          return context.operationType !== 'authorizer';
+        },
       },
       {
         type: 'input',
@@ -33,6 +37,9 @@ export const createFunction = (cdkFolderPath: string) => {
         ],
         validate: (value: string) => ['Y', 'N'].includes(value),
         message: 'Do you require a use case too? (Y/N)',
+        when(context: any) {
+          return context.operationType !== 'authorizer';
+        },
       },
       {
         type: 'input',
@@ -42,6 +49,7 @@ export const createFunction = (cdkFolderPath: string) => {
           return (
             context.useCaseRequired === 'Y' &&
             context.operationType !== 'dynamodb-stream' &&
+            context.operationType !== 'authorizer' &&
             context.operationType !== 'sqs-queue'
           );
         },
@@ -58,6 +66,7 @@ export const createFunction = (cdkFolderPath: string) => {
         message: 'Do you require a DTO too? (Y/N)',
         when(context: any) {
           return (
+            context.operationType !== 'authorizer' &&
             context.operationType !== 'dynamodb-stream' &&
             context.operationType !== 'sqs-queue'
           );
@@ -70,6 +79,7 @@ export const createFunction = (cdkFolderPath: string) => {
         message: 'What is the return status code please?',
         when(context: any) {
           return (
+            context.operationType !== 'authorizer' &&
             context.operationType !== 'dynamodb-stream' &&
             context.operationType !== 'sqs-queue'
           );
@@ -388,6 +398,17 @@ export const createFunction = (cdkFolderPath: string) => {
           path: `../${cdkFolderPath}/stateless/src/use-cases/{{kebabCase name}}-stream-processor/index.ts`,
           templateFile:
             'src/templates/use-cases/shared/use-case-stream.index.hbs',
+        });
+      }
+
+      // if authorizer we create the lambda authorizer
+      if (data.operationType === 'authorizer') {
+        actions.push({
+          type: 'add',
+          skipIfExists: true,
+          path: `../${cdkFolderPath}/stateless/src/adapters/primary/lambda-authorizer/lambda-authorizer.adapter.ts`,
+          templateFile:
+            'src/templates/adapters/primary/lambda-authorizer.adapter.hbs',
         });
       }
 

@@ -28,6 +28,10 @@ describe('shared', () => {
           "value": "delete",
         },
         {
+          "name": "Authorizer (API Gateway)",
+          "value": "authorizer",
+        },
+        {
           "name": "Stream (DynamoDB)",
           "value": "dynamodb-stream",
         },
@@ -44,6 +48,7 @@ describe('shared', () => {
       "message": [Function],
       "name": "name",
       "type": "input",
+      "when": [Function],
     },
     {
       "choices": [
@@ -61,6 +66,7 @@ describe('shared', () => {
       "name": "useCaseRequired",
       "type": "input",
       "validate": [Function],
+      "when": [Function],
     },
     {
       "message": "What is the use case type? (e.g. Customer or Order)",
