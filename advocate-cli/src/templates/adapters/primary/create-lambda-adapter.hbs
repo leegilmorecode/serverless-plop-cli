@@ -1,6 +1,6 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { MetricUnit, Metrics } from '@aws-lambda-powertools/metrics';
-import { errorHandler, logger, schemaValidator } from '@shared';
+import { getHeaders, errorHandler, logger, schemaValidator } from '@shared';
 import { Tracer } from '@aws-lambda-powertools/tracer';
 import { captureLambdaHandler } from '@aws-lambda-powertools/tracer/middleware';
 import { injectLambdaContext } from '@aws-lambda-powertools/logger/middleware';
@@ -13,9 +13,12 @@ import { ValidationError } from '@errors/validation-error';
 import { {{camelCase name}}UseCase } from '@use-cases/{{kebabCase name}}';
 import { schema } from './{{kebabCase name}}.schema';
 import httpErrorHandler from '@middy/http-error-handler';
+import { config } from '@config';
 
 const tracer = new Tracer();
 const metrics = new Metrics();
+
+const stage = config.get('stage');
 
 export const {{camelCase name}}Adapter = async ({
   body,
@@ -34,6 +37,7 @@ export const {{camelCase name}}Adapter = async ({
     return {
       statusCode: {{statusCode}},
       body: JSON.stringify(created),
+      headers: getHeaders(stage),
     };
   } catch (error) {
     let errorMessage = 'Unknown error';

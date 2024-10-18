@@ -21,6 +21,12 @@ export const sharedActions = (cdkFolderPath: string) => {
     {
       type: 'add',
       skipIfExists: true,
+      path: `../${cdkFolderPath}/stateless/src/shared/headers.ts`,
+      templateFile: 'src/templates/shared/headers.ts.hbs',
+    },
+    {
+      type: 'add',
+      skipIfExists: true,
       path: `../${cdkFolderPath}/stateless/src/shared/schema-validator.ts`,
       templateFile: 'src/templates/shared/schema-validator.ts.hbs',
     },

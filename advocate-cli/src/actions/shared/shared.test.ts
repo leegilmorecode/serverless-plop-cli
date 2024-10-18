@@ -25,6 +25,12 @@ describe('shared', () => {
     "type": "add",
   },
   {
+    "path": "../customer-service/stateless/src/shared/headers.ts",
+    "skipIfExists": true,
+    "templateFile": "src/templates/shared/headers.ts.hbs",
+    "type": "add",
+  },
+  {
     "path": "../customer-service/stateless/src/shared/schema-validator.ts",
     "skipIfExists": true,
     "templateFile": "src/templates/shared/schema-validator.ts.hbs",

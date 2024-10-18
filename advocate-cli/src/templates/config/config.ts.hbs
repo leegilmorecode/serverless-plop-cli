@@ -1,6 +1,12 @@
 const convict = require('convict');
 
 export const config = convict({
+  stage: {
+    doc: 'The stage being deployed',
+    format: String,
+    default: '',
+    env: 'STAGE',
+  },
   tableName: {
     doc: 'The database table where we store items',
     format: String,
