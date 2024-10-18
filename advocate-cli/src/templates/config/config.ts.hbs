@@ -1,0 +1,10 @@
+const convict = require('convict');
+
+export const config = convict({
+  tableName: {
+    doc: 'The database table where we store items',
+    format: String,
+    default: '',
+    env: 'TABLE_NAME',
+  },
+}).validate({ allowed: 'strict' });
