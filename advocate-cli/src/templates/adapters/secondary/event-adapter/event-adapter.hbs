@@ -1,0 +1,35 @@
+import {
+    EventBridgeClient,
+    PutEventsCommand,
+    PutEventsCommandInput,
+    PutEventsCommandOutput,
+    PutEventsRequestEntry,
+  } from '@aws-sdk/client-eventbridge';
+  
+  import { logger } from '@shared';
+  
+  const client = new EventBridgeClient({});
+  
+  export async function publishEvent(centralBusName: string, event: Record<string, any>): Promise<void> {
+    try {
+      const newEvent: PutEventsRequestEntry = {
+        Detail: JSON.stringify(event.detail),
+        DetailType: event.detail.metadata.type,
+        EventBusName: centralBusName,
+        Source: event.detail.metadata.source,
+      };
+  
+      const params: PutEventsCommandInput = {
+        Entries: [newEvent],
+      };
+  
+      const response: PutEventsCommandOutput = await client.send(
+        new PutEventsCommand(params)
+      );
+  
+      logger.info(`events published successfully: ${JSON.stringify(response)}`);
+    } catch (error) {
+      logger.error(`error publishing message : ${JSON.stringify(error)}`);
+      throw error;
+    }
+  }

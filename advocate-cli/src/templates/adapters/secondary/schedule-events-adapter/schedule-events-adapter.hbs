@@ -1,0 +1,52 @@
+import {
+    ActionAfterCompletion,
+    CreateScheduleCommand,
+    FlexibleTimeWindowMode,
+    SchedulerClient,
+  } from '@aws-sdk/client-scheduler';
+  
+  const client = new SchedulerClient({});
+
+  export function formatISODatetimeForScheduler(isoString: string): string {
+    const date = new Date(isoString);
+  
+    const pad = (num: number): string => num.toString().padStart(2, '0');
+  
+    const year = date.getUTCFullYear();
+    const month = pad(date.getUTCMonth());
+    const day = pad(date.getUTCDate());
+    const hours = pad(date.getUTCHours());
+    const minutes = pad(date.getUTCMinutes());
+    const seconds = pad(date.getUTCSeconds());
+  
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+  }
+  
+  export async function scheduleEvent(
+    event: Record<string, any>,
+    destinationQueueArn: string,
+    scheduleRoleArn: string,
+    scheduleGroupName: string,
+    destinationDeadLetterQueueArn: string
+  ) {
+    await client.send(
+      new CreateScheduleCommand({
+        Name: event.id,
+        GroupName: scheduleGroupName,
+        ActionAfterCompletion: ActionAfterCompletion.DELETE,
+        Target: {
+          RoleArn: scheduleRoleArn,
+          Arn: destinationQueueArn,
+          Input: JSON.stringify(event),
+          DeadLetterConfig: { Arn: destinationDeadLetterQueueArn },
+        },
+        FlexibleTimeWindow: {
+          Mode: FlexibleTimeWindowMode.OFF,
+        },
+        Description: `${event.id} was created for ${event.userEmail}`,
+        ScheduleExpression: `at(${formatISODatetimeForScheduler(
+          event.reminderDate
+        )})`,
+      })
+    );
+  }

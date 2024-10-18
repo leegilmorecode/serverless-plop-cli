@@ -1,17 +1,18 @@
 import * as path from 'path';
 
+import fs from 'fs';
 import { NodePlopAPI } from 'plop';
 import { createApp } from './src/action-types/create-app/create-app.js';
-import { createFunction } from './src/actions/functions/create-function/create-function.js';
-import { errorActions } from './src/actions/errors/errors.js';
-import fs from 'fs';
-import { installCdkAppActions } from './src/actions/installs/install-cdk-app.js';
 import { installDeps } from './src/action-types/install-deps/install-deps.js';
-import { installDepsActions } from './src/actions/installs/install-deps.js';
+import { createSecondaryAdapters } from './src/actions/adapters/secondary/create-secondary-adapters.js';
 import { jestActions } from './src/actions/config/jest.config.js';
+import { tsConfigActions } from './src/actions/config/ts-config.js';
+import { errorActions } from './src/actions/errors/errors.js';
+import { createFunction } from './src/actions/functions/create-function/create-function.js';
+import { installCdkAppActions } from './src/actions/installs/install-cdk-app.js';
+import { installDepsActions } from './src/actions/installs/install-deps.js';
 import { sharedActions } from './src/actions/shared/shared.js';
 import { stacksActions } from './src/actions/stacks/stacks.js';
-import { tsConfigActions } from './src/actions/config/ts-config.js';
 
 const cdkFolderPath = path.basename(process.cwd());
 
@@ -26,15 +27,20 @@ export default function (plop: NodePlopAPI) {
     fs.rmSync(config.path, { recursive: true, force: true });
     return `deleted lib folder ${config.path}`;
   });
+  // delete the test folder as we will create config for to int/unit/e2e
+  plop.setActionType('delete test folder', (answers, config) => {
+    fs.rmSync(config.path, { recursive: true, force: true });
+    return `deleted test folder ${config.path}`;
+  });
   // set the welcome message and the generators
   plop.setWelcomeMessage('please choose an option below:');
-  plop.setGenerator('Create a new CDK app', {
-    description: 'Create a new CDK app',
+  plop.setGenerator('Create a new AWS CDK app', {
+    description: 'Create a new AWS CDK app',
     prompts: [],
     actions: [...installCdkAppActions()],
   });
-  plop.setGenerator('Create all base deps', {
-    description: 'Create all of the base shared libs and config files',
+  plop.setGenerator('Refactor to clean code', {
+    description: 'Refactor to clean code',
     prompts: [],
     actions: [
       ...installDepsActions(),
@@ -45,22 +51,13 @@ export default function (plop: NodePlopAPI) {
       ...stacksActions(cdkFolderPath),
     ],
   });
-  plop.setGenerator('Create tsconfig.json', {
-    description: 'Create the tsconfig.json with path aliases',
-    prompts: [],
-    actions: [...tsConfigActions(cdkFolderPath)],
-  });
-  plop.setGenerator('Create jest.config.js', {
-    description: 'Create the jest.config.js with path aliases',
-    prompts: [],
-    actions: jestActions(cdkFolderPath),
-  });
-  plop.setGenerator('Create shared utils', {
-    description: 'Create the shared utility functions',
-    prompts: [],
-    actions: [...sharedActions(cdkFolderPath)],
-  });
-  plop.setGenerator('Create lambda adapter', {
+  plop.setGenerator('Create lambda adapter(s) [create, delete, update, get]', {
     ...createFunction(cdkFolderPath),
   });
+  plop.setGenerator(
+    'Create secondary adapter(s) [email, event, event-scheduler, dynamoddb, notifications]',
+    {
+      ...createSecondaryAdapters(cdkFolderPath),
+    }
+  );
 }

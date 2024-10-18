@@ -7,11 +7,41 @@ describe('shared', () => {
     expect(createFunction(cdkFolderPath)).toMatchInlineSnapshot(`
 {
   "actions": [Function],
-  "description": "Create resouce Lambda adapter and use case",
+  "description": "Create resource Lambda adapter and use case",
   "prompts": [
     {
-      "default": "create",
-      "message": "what is the use case name please? (example: create customer)",
+      "choices": [
+        {
+          "name": "Create (API Gateway)",
+          "value": "create",
+        },
+        {
+          "name": "Get (API Gateway)",
+          "value": "get",
+        },
+        {
+          "name": "Update (API Gateway)",
+          "value": "update",
+        },
+        {
+          "name": "Delete (API Gateway)",
+          "value": "delete",
+        },
+        {
+          "name": "Stream (DynamoDB)",
+          "value": "dynamodb-stream",
+        },
+        {
+          "name": "Queue (SQS)",
+          "value": "sqs-queue",
+        },
+      ],
+      "message": "What type of operation do you want to create?",
+      "name": "operationType",
+      "type": "list",
+    },
+    {
+      "message": [Function],
       "name": "name",
       "type": "input",
     },
@@ -50,16 +80,18 @@ describe('shared', () => {
         },
       ],
       "default": "Y",
-      "message": "Do you require a dto too? (Y/N)",
+      "message": "Do you require a DTO too? (Y/N)",
       "name": "dtoRequired",
       "type": "input",
       "validate": [Function],
+      "when": [Function],
     },
     {
-      "default": 201,
-      "message": "what is the return status code please?",
+      "default": 200,
+      "message": "What is the return status code please?",
       "name": "statusCode",
       "type": "input",
+      "when": [Function],
     },
   ],
 }

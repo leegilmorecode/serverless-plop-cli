@@ -19,6 +19,14 @@ describe('shared', () => {
       "cdkFolderPath": "customer-service",
     },
     "force": true,
+    "path": "../customer-service/test/",
+    "type": "delete test folder",
+  },
+  {
+    "data": {
+      "cdkFolderPath": "customer-service",
+    },
+    "force": true,
     "path": "../customer-service/bin/customer-service.ts",
     "templateFile": "src/templates/bin/bin.template.ts.hbs",
     "type": "add",

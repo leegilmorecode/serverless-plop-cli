@@ -1,38 +1,32 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { MetricUnit, Metrics } from '@aws-lambda-powertools/metrics';
-import { errorHandler, logger, schemaValidator } from '@shared';
+import { errorHandler, logger } from '@shared';
 import { Tracer } from '@aws-lambda-powertools/tracer';
 import { captureLambdaHandler } from '@aws-lambda-powertools/tracer/middleware';
 import { injectLambdaContext } from '@aws-lambda-powertools/logger/middleware';
 import { logMetrics } from '@aws-lambda-powertools/metrics/middleware';
 import middy from '@middy/core';
-
-import { {{pascalCase name}}Dto } from '@dto/{{kebabCase name}}';
-import { {{pascalCase useCaseSchemaName}}Dto } from '@dto/{{kebabCase useCaseSchemaName}}';
 import { ValidationError } from '@errors/validation-error';
 import { {{camelCase name}}UseCase } from '@use-cases/{{kebabCase name}}';
-import { schema } from './{{kebabCase name}}.schema';
 
 const tracer = new Tracer();
 const metrics = new Metrics();
 
 export const {{camelCase name}}Adapter = async ({
-  body,
+  pathParameters,
 }: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   try {
-    if (!body) throw new ValidationError('no payload body');
+    const id = pathParameters?.id;
 
-    const {{camelCase useCaseSchemaName}} = JSON.parse(body) as {{pascalCase name}}Dto;
+    if (!id) throw new ValidationError('Id is required');
 
-    schemaValidator(schema, {{camelCase useCaseSchemaName}});
-
-    const created: {{pascalCase useCaseSchemaName}}Dto = await {{camelCase name}}UseCase({{camelCase useCaseSchemaName}});
+    await {{camelCase name}}UseCase(id);
 
     metrics.addMetric('Successful{{pascalCase name}}', MetricUnit.Count, 1);
 
     return {
       statusCode: {{statusCode}},
-      body: JSON.stringify(created),
+      body: JSON.stringify('No Content'),
     };
   } catch (error) {
     let errorMessage = 'Unknown error';

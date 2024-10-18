@@ -1,0 +1,19 @@
+import { {{pascalCase name}}Dto } from '@dto/{{kebabCase name}}';
+import { {{pascalCase useCaseSchemaName}}Dto } from '@dto/{{kebabCase useCaseSchemaName}}';
+import { logger, schemaValidator } from '@shared';
+import { schema } from '@schemas/{{kebabCase useCaseSchemaName}}';
+
+export async function {{camelCase name}}UseCase(
+  id: string,
+  {{camelCase useCaseSchemaName}}: {{pascalCase name}}Dto
+): Promise<{{pascalCase useCaseSchemaName}}Dto> {
+  const {{camelCase useCaseSchemaName}}Dto: {{pascalCase useCaseSchemaName}}Dto = {} as const;
+
+  // TODO - update using a secondary adapter
+
+  schemaValidator(schema, {{camelCase useCaseSchemaName}}Dto);
+
+  logger.info(`{{camelCase useCaseSchemaName}} with id ${id} updated with changes ${ {{camelCase useCaseSchemaName}} }`);
+
+  return {{camelCase useCaseSchemaName}}Dto;
+}

@@ -18,21 +18,25 @@ const metrics = new Metrics();
 
 export const {{camelCase name}}Adapter = async ({
   body,
+  pathParameters,
 }: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   try {
     if (!body) throw new ValidationError('no payload body');
+    if (!pathParameters || !pathParameters.id) throw new ValidationError('no id');
+
+    const {id} = pathParameters;
 
     const {{camelCase useCaseSchemaName}} = JSON.parse(body) as {{pascalCase name}}Dto;
 
     schemaValidator(schema, {{camelCase useCaseSchemaName}});
 
-    const created: {{pascalCase useCaseSchemaName}}Dto = await {{camelCase name}}UseCase({{camelCase useCaseSchemaName}});
+    const updated: {{pascalCase useCaseSchemaName}}Dto = await {{camelCase name}}UseCase(id, {{camelCase useCaseSchemaName}});
 
     metrics.addMetric('Successful{{pascalCase name}}', MetricUnit.Count, 1);
 
     return {
       statusCode: {{statusCode}},
-      body: JSON.stringify(created),
+      body: JSON.stringify(updated),
     };
   } catch (error) {
     let errorMessage = 'Unknown error';

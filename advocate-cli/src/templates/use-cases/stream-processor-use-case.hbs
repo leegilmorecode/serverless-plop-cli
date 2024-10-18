@@ -1,0 +1,12 @@
+
+import { logger } from '@shared';
+
+export async function processStreamUseCase(
+  item: Record<string,any>
+): Promise<Record<string,any>> {
+ // TODO - process the item with a secondary adapter
+
+  logger.info(`item processed`);
+
+  return item;
+}

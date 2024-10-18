@@ -9,6 +9,14 @@ export const stacksActions = (cdkFolderPath: string) => {
       },
     },
     {
+      type: 'delete test folder',
+      force: true,
+      path: `../${cdkFolderPath}/test/`,
+      data: {
+        cdkFolderPath: cdkFolderPath,
+      },
+    },
+    {
       type: 'add',
       force: true,
       path: `../${cdkFolderPath}/bin/${cdkFolderPath}.ts`,

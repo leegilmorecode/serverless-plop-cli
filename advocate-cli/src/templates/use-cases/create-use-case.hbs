@@ -1,24 +1,12 @@
-// import * as event from '@events/{{camelCase name}}';
 import { {{pascalCase name}}Dto } from '@dto/{{kebabCase name}}';
-import { getISOString, logger, schemaValidator } from '@shared/index';
+import { {{pascalCase useCaseSchemaName}}Dto } from '@dto/{{kebabCase useCaseSchemaName}}';
+import { getISOString, logger, schemaValidator } from '@shared';
 import { schema } from '@schemas/{{kebabCase useCaseSchemaName}}';
 import { v4 as uuid } from 'uuid';
 
-// primary adapter --> (use case) --> secondary adapter(s)
-
-/**
- * Add description here
- * Input: ?
- * Output: ?
- *
- * Primary course:
- *
- *  1. step one
- *  2. step two
- */
 export async function {{camelCase name}}UseCase(
   {{camelCase useCaseSchemaName}}: {{pascalCase name}}Dto
-): Promise<{{pascalCase name}}Dto> {
+): Promise<{{pascalCase useCaseSchemaName}}Dto> {
   const createdDate = getISOString();
 
   const {{camelCase useCaseSchemaName}}Dto: {{pascalCase name}}Dto = {
@@ -29,18 +17,10 @@ export async function {{camelCase name}}UseCase(
 
   schemaValidator(schema, {{camelCase useCaseSchemaName}});
 
-  // TODO - import and call secondary adapters
+  // TODO - use a secondary adapter to persist the item in a store
 
-  // TODO publish the correct event
-  // await publishEvent(
-  //  {{camelCase useCaseSchemaName}},
-  //  event.eventName,
-  //  event.eventSource,
-  //  event.eventVersion,
-  //  createdDate
-  // );
   logger.info(
-    `{{camelCase useCaseSchemaName}} created event published`
+    `{{camelCase useCaseSchemaName}} created`
   );
 
   return {{camelCase useCaseSchemaName}}Dto;

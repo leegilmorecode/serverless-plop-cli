@@ -1,0 +1,13 @@
+import { {{pascalCase useCaseSchemaName}}Dto } from '@dto/{{kebabCase useCaseSchemaName}}';
+import { logger } from '@shared';
+
+export async function {{camelCase name}}UseCase(
+  id: string
+): Promise<{{pascalCase useCaseSchemaName}}Dto> {
+  // TODO - retrieve using secondary adapter
+  const {{camelCase useCaseSchemaName}}: {{pascalCase useCaseSchemaName}}Dto = {} as const;
+
+  logger.info(`{{camelCase useCaseSchemaName}} retrieved: ${JSON.stringify({{camelCase useCaseSchemaName}})}`);
+ 
+  return {{camelCase useCaseSchemaName}};
+}
