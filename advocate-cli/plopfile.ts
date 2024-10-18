@@ -15,6 +15,7 @@ import { installCdkAppActions } from './src/actions/installs/install-cdk-app.js'
 import { installDepsActions } from './src/actions/installs/install-deps.js';
 import { sharedActions } from './src/actions/shared/shared.js';
 import { stacksActions } from './src/actions/stacks/stacks.js';
+import { typesActions } from './src/actions/types/types.js';
 
 const cdkFolderPath = path.basename(process.cwd());
 
@@ -50,6 +51,7 @@ export default function (plop: NodePlopAPI) {
       ...tsConfigActions(cdkFolderPath),
       ...jestActions(cdkFolderPath),
       ...prettierActions(cdkFolderPath),
+      ...typesActions(cdkFolderPath),
       ...configActions(cdkFolderPath),
       ...sharedActions(cdkFolderPath),
       ...stacksActions(cdkFolderPath),

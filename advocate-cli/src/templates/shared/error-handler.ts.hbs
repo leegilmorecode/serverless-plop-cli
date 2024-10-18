@@ -1,10 +1,9 @@
-import { APIGatewayProxyResult } from 'aws-lambda';
 import { logger } from '@shared/logger';
+import { APIGatewayProxyResult } from 'aws-lambda';
+import createError from 'http-errors';
 
-// we would typically use middy - but to keep this simple to read
-// without mutliple additional packages lets build outselves
 export function errorHandler(error: Error | unknown): APIGatewayProxyResult {
-  console.error(error);
+  logger.error(`private error: ${error}`);
 
   let errorMessage: string;
   let statusCode: number;
@@ -14,25 +13,43 @@ export function errorHandler(error: Error | unknown): APIGatewayProxyResult {
       case 'ValidationError':
         errorMessage = error.message;
         statusCode = 400;
-        break;
+
+        logger.error(errorMessage, {
+          errorName: errorMessage,
+          statusCode,
+        });
+
+        throw createError.BadRequest(errorMessage);
       case 'ResourceNotFound':
         errorMessage = error.message;
         statusCode = 404;
-        break;
+
+        logger.error(errorMessage, {
+          errorName: errorMessage,
+          statusCode,
+        });
+
+        throw createError.NotFound(errorMessage);
       default:
         errorMessage = 'An error has occurred';
         statusCode = 500;
-        break;
+
+        logger.error(errorMessage, {
+          errorName: errorMessage,
+          statusCode,
+        });
+
+        throw createError.InternalServerError(errorMessage);
     }
   } else {
     errorMessage = 'An error has occurred';
     statusCode = 500;
   }
 
-  logger.error(errorMessage);
+  logger.error(errorMessage, {
+    errorName: errorMessage,
+    statusCode,
+  });
 
-  return {
-    statusCode: statusCode,
-    body: JSON.stringify(errorMessage),
-  };
+  throw createError.InternalServerError(errorMessage);
 }

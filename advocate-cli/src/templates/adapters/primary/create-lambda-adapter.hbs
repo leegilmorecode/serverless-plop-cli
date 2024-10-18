@@ -12,6 +12,7 @@ import { {{pascalCase useCaseSchemaName}}Dto } from '@dto/{{kebabCase useCaseSch
 import { ValidationError } from '@errors/validation-error';
 import { {{camelCase name}}UseCase } from '@use-cases/{{kebabCase name}}';
 import { schema } from './{{kebabCase name}}.schema';
+import httpErrorHandler from '@middy/http-error-handler';
 
 const tracer = new Tracer();
 const metrics = new Metrics();
@@ -48,4 +49,5 @@ export const {{camelCase name}}Adapter = async ({
 export const handler = middy({{camelCase name}}Adapter)
   .use(injectLambdaContext(logger))
   .use(captureLambdaHandler(tracer))
-  .use(logMetrics(metrics));
+  .use(logMetrics(metrics))
+  .use(httpErrorHandler());

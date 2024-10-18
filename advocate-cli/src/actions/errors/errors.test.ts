@@ -7,15 +7,21 @@ describe('errors', () => {
     expect(errorActions(cdkFolderPath)).toMatchInlineSnapshot(`
 [
   {
-    "path": "../customer-service/stateless/src/errors/resource-not-found.ts",
+    "path": "../customer-service/stateless/src/errors/forbidden-error.ts",
     "skipIfExists": true,
-    "templateFile": "src/templates/errors/resource-not-found.ts.hbs",
+    "templateFile": "src/templates/errors/forbidden-error.ts.hbs",
     "type": "add",
   },
   {
     "path": "../customer-service/stateless/src/errors/validation-error.ts",
     "skipIfExists": true,
     "templateFile": "src/templates/errors/validation-error.ts.hbs",
+    "type": "add",
+  },
+  {
+    "path": "../customer-service/stateless/src/errors/resource-not-found-error.ts",
+    "skipIfExists": true,
+    "templateFile": "src/templates/errors/resource-not-found-error.ts.hbs",
     "type": "add",
   },
   {

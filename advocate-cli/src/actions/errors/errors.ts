@@ -3,14 +3,20 @@ export const errorActions = (cdkFolderPath: string) => {
     {
       type: 'add',
       skipIfExists: true,
-      path: `../${cdkFolderPath}/stateless/src/errors/resource-not-found.ts`,
-      templateFile: 'src/templates/errors/resource-not-found.ts.hbs',
+      path: `../${cdkFolderPath}/stateless/src/errors/forbidden-error.ts`,
+      templateFile: 'src/templates/errors/forbidden-error.ts.hbs',
     },
     {
       type: 'add',
       skipIfExists: true,
       path: `../${cdkFolderPath}/stateless/src/errors/validation-error.ts`,
       templateFile: 'src/templates/errors/validation-error.ts.hbs',
+    },
+    {
+      type: 'add',
+      skipIfExists: true,
+      path: `../${cdkFolderPath}/stateless/src/errors/resource-not-found-error.ts`,
+      templateFile: 'src/templates/errors/resource-not-found-error.ts.hbs',
     },
     {
       type: 'add',
