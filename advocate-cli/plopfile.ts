@@ -16,6 +16,7 @@ import { installDepsActions } from './src/actions/installs/install-deps.js';
 import { sharedActions } from './src/actions/shared/shared.js';
 import { stacksActions } from './src/actions/stacks/stacks.js';
 import { typesActions } from './src/actions/types/types.js';
+import { utilsActions } from './src/actions/utils/utils.js';
 
 const cdkFolderPath = path.basename(process.cwd());
 
@@ -55,6 +56,7 @@ export default function (plop: NodePlopAPI) {
       ...configActions(cdkFolderPath),
       ...sharedActions(cdkFolderPath),
       ...stacksActions(cdkFolderPath),
+      ...utilsActions(cdkFolderPath),
     ],
   });
   plop.setGenerator('Create lambda adapter(s) [create, delete, update, get]', {

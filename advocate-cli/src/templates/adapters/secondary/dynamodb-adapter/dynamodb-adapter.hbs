@@ -15,7 +15,7 @@ import {
 } from '@aws-sdk/client-dynamodb';
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
 
-import { ResourceNotFoundError } from '@errors/resource-not-found';
+import { ResourceNotFoundError } from '@errors/resource-not-found-error';
 import { logger } from '@shared';
 
 const dynamoDb = new DynamoDBClient({});
