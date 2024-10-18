@@ -12,6 +12,24 @@ describe('jest-config', () => {
     "templateFile": "src/templates/jest.config.js.hbs",
     "type": "add",
   },
+  {
+    "force": true,
+    "path": "../customer-service/jest.config.e2e.js",
+    "templateFile": "src/templates/jest.config.e2e.js.hbs",
+    "type": "add",
+  },
+  {
+    "force": true,
+    "path": "../customer-service/jest.config.int.js",
+    "templateFile": "src/templates/jest.config.int.js.hbs",
+    "type": "add",
+  },
+  {
+    "force": true,
+    "path": "../customer-service/jest.config.int.js",
+    "templateFile": "src/templates/jest.config.integration.js.hbs",
+    "type": "add",
+  },
 ]
 `);
   });

@@ -6,6 +6,7 @@ import { createApp } from './src/action-types/create-app/create-app.js';
 import { installDeps } from './src/action-types/install-deps/install-deps.js';
 import { createSecondaryAdapters } from './src/actions/adapters/secondary/create-secondary-adapters.js';
 import { jestActions } from './src/actions/config/jest.config.js';
+import { prettierActions } from './src/actions/config/prettier.config.js';
 import { tsConfigActions } from './src/actions/config/ts-config.js';
 import { errorActions } from './src/actions/errors/errors.js';
 import { createFunction } from './src/actions/functions/create-function/create-function.js';
@@ -47,6 +48,7 @@ export default function (plop: NodePlopAPI) {
       ...errorActions(cdkFolderPath),
       ...tsConfigActions(cdkFolderPath),
       ...jestActions(cdkFolderPath),
+      ...prettierActions(cdkFolderPath),
       ...sharedActions(cdkFolderPath),
       ...stacksActions(cdkFolderPath),
     ],
