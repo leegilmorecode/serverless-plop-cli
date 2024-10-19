@@ -7,7 +7,7 @@ describe('shared', () => {
     expect(createFunction(cdkFolderPath)).toMatchInlineSnapshot(`
 {
   "actions": [Function],
-  "description": "Create resource Lambda adapter and use case",
+  "description": "[create, delete, update, get, queue, stream, authorizer]",
   "prompts": [
     {
       "choices": [

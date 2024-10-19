@@ -2,7 +2,7 @@ import { ActionType } from 'plop';
 
 export const createSecondaryAdapters = (cdkFolderPath: string) => {
   return {
-    description: 'Create secondary adapters',
+    description: '[email, event, event-scheduler, dynamoddb, notifications]',
     prompts: [
       {
         type: 'checkbox',
@@ -15,6 +15,7 @@ export const createSecondaryAdapters = (cdkFolderPath: string) => {
           { name: 'Notification', value: 'notification' },
           { name: 'Event', value: 'event' },
           { name: 'Event Scheduler', value: 'scheduleEvent' },
+          { name: 'Parameters', value: 'parameters' },
           { name: 'Cancel', value: 'cancel' },
         ],
         validate: (value: string[]) => {
@@ -48,6 +49,23 @@ export const createSecondaryAdapters = (cdkFolderPath: string) => {
           path: `../${cdkFolderPath}/stateless/src/adapters/secondary/dynamodb-adapter/index.ts`,
           templateFile:
             'src/templates/adapters/secondary/dynamodb-adapter/index.hbs',
+        });
+      }
+
+      if (data.adapters.includes('parameters')) {
+        actions.push({
+          type: 'add',
+          skipIfExists: true,
+          path: `../${cdkFolderPath}/stateless/src/adapters/secondary/parameters-adapter/parameters-adapter.ts`,
+          templateFile:
+            'src/templates/adapters/secondary/parameters-adapter/parameters-adapter.hbs',
+        });
+        actions.push({
+          type: 'add',
+          skipIfExists: true,
+          path: `../${cdkFolderPath}/stateless/src/adapters/secondary/parameters-adapter/index.ts`,
+          templateFile:
+            'src/templates/adapters/secondary/parameters-adapter/index.hbs',
         });
       }
 

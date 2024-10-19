@@ -61,13 +61,10 @@ export default function (plop: NodePlopAPI) {
       ...utilsActions(cdkFolderPath),
     ],
   });
-  plop.setGenerator('Create lambda adapter(s) [create, delete, update, get]', {
+  plop.setGenerator('Create lambda adapter(s)', {
     ...createFunction(cdkFolderPath),
   });
-  plop.setGenerator(
-    'Create secondary adapter(s) [email, event, event-scheduler, dynamoddb, notifications]',
-    {
-      ...createSecondaryAdapters(cdkFolderPath),
-    }
-  );
+  plop.setGenerator('Create secondary adapter(s)', {
+    ...createSecondaryAdapters(cdkFolderPath),
+  });
 }

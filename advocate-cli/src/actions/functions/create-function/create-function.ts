@@ -2,7 +2,7 @@ import { ActionType } from 'plop';
 
 export const createFunction = (cdkFolderPath: string) => {
   return {
-    description: 'Create resource Lambda adapter and use case',
+    description: '[create, delete, update, get, queue, stream, authorizer]',
     prompts: [
       {
         type: 'list',
